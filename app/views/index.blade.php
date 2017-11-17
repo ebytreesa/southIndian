@@ -1,7 +1,7 @@
 @extends('layouts.home')
 
 @section('title')
-	South Indian Restaurant
+	South Indian 
 @stop
 
 @section('content')
