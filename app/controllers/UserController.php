@@ -28,9 +28,8 @@ class UserController extends BaseController {
 			$user->username= Input::get('username');
 			$user->email= Input::get('email');
 			$user->password	= Hash::make(Input::get('pass1'));
-			$user->admin     = Input::get('role');
-
-			
+			$user->city= Input::get('city');
+			$user->role     = Input::get('role');		
 			
 			$user->save();
 		}
@@ -57,7 +56,7 @@ class UserController extends BaseController {
 		);
 		if(Auth::attempt($userdata))
 		{
-			if(Auth::user()->admin == 1){
+			if(Auth::user()->role == 1){
 				return Redirect::to('/admin')->withSuccess('Admin is logged in');
 			}else{
 				$name = Auth::user()->username;
@@ -79,11 +78,7 @@ class UserController extends BaseController {
 			
 		}
 
-	public function listUsers()
-	{
-		$users = User::get();
-		return View::make('users.listUsers')->withUsers($users);
-	}
+	
 
 	public function editUser($id)
 	{
@@ -114,7 +109,8 @@ class UserController extends BaseController {
 			$user = User::where('id',Input::get('id'))->first();
 			$user->username= Input::get('username');
 			$user->email= Input::get('email');
-			$user->admin = Input::get('role');
+			$user->role = Input::get('role');
+			$user->city = Input::get('city');
 			
 			if(Input::hasFile('picture'))
 			{
@@ -165,7 +161,7 @@ class UserController extends BaseController {
 	public function profile($username)
 		{
 			$user = User::where('username', $username)->first();
-			return View::make('users.profile')->withUser($user);
+			return View::make('profile.profile')->withUser($user);
 		}
 
 	public function editProfile($username)

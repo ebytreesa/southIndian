@@ -56,7 +56,8 @@ Create User
             </div>
              <div class="col-sm-2 col-md-2"></div>
         </div>
-
+        @if (Auth::check() && (Auth::user()->role == 1))
+                       
         <div class="form-group">
             <label for="role" class="col-sm-2 col-md-1 control-label">Role</label>
             <div class="col-sm-8 col-md-9">
@@ -67,7 +68,7 @@ Create User
                 </select>
             </div>
         </div>
-
+        @endif 
          <div class="form-group">
             <label for="picture" class="col-sm-2 col-md-1 control-label">Billede</label>
             <div class="col-sm-8 col-md-9">

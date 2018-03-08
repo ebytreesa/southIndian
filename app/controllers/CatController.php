@@ -1,18 +1,13 @@
 <?php
 
 class CatController extends BaseController {
-	public function listCategory()
+	public function listCategories()
 	{
 		$cat = Category::get();
-		return View::make('cat.listCategory')->withCat($cat);
+		return View::make('cat.listCategories')->withCat($cat);
 	}
 
-	public function adminShowCategory($id)
-	{
-		$cat = Category::where('id',$id)->first();
-		$products = Product::where('cat_id', $id)->get();
-		return View::make('cat.adminShowCategory')->withCat($cat)->withProducts($products);
-	}
+	
 
 
 	public function createCategory()
@@ -42,7 +37,7 @@ class CatController extends BaseController {
 			$cat->name = Input::get('name');
 			$cat->save() ;
 			
-			return Redirect::to('/admin/listCategory')->withSuccess('Ny category blev oprettet');
+			return Redirect::to('/admin/listCategories')->withSuccess('New category added to the list');
 		}
 
 	}
@@ -76,7 +71,7 @@ class CatController extends BaseController {
 			$cat->name = Input::get('name');
 			$cat->save() ;
 			
-			return Redirect::to('/admin/listCategory')->withSuccess('category blev redegeret');
+			return Redirect::to('/admin/listCategories')->withSuccess('category blev redegeret');
 		}
 
 	}
@@ -84,16 +79,8 @@ class CatController extends BaseController {
 
 	public function deleteCategory($id)
 	{
-		$products = Product::where('cat_id',$id)->get();
-		foreach($products as $p)
-		{
-			if($p->image){
-				unlink(public_path(). '/products/' . $p->image);
-		 		unlink(public_path(). '/products/' . $p->image. '_thumb');
-			}
-			$p->delete();
-		}
+		
 		Category::destroy($id);
-		return Redirect::to('/admin/listCategory')->withError('category slettet');
+		return Redirect::to('/admin/listCategories')->withError('category deleted');
 	}
 }

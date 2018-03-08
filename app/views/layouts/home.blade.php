@@ -5,11 +5,10 @@
 <title>@yield('title')</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/jquery.validate.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/css/bootstrap.min.css') }}">
+<script src="{{ URL::to('/js/jquery.min.js') }}"></script>
+<script src="{{ URL::to('/js/jquery.validate.min.js') }}"></script>
+<script src="{{ URL::to('/js/bootstrap.min.js') }}"></script> 
 
  
 </head>
@@ -24,7 +23,7 @@
 </style>
 
 <body>
-	<div class="container-fluid"  style="background-color:;">
+	<div class="container"  style="background-color:;">
 		<div class="container">
 			@if ( Session::has('success'))
 			<div class="alert alert-success">

@@ -5,11 +5,10 @@
 <title>@yield('title')</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/jquery.validate.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ URL::to('/css/bootstrap.min.css') }}">
+<script src="{{ URL::to('/js/jquery.min.js') }}"></script>
+<script src="{{ URL::to('/js/jquery.validate.min.js') }}"></script>
+<script src="{{ URL::to('/js/bootstrap.min.js') }}"></script> 
 
  
 </head>
@@ -47,7 +46,7 @@
 				</div>
 
 				<div class="col-sm-3">
-					@if (Auth::check() && Auth::user()->admin == 1)
+					@if (Auth::check() && Auth::user()->role == 1)
 						<a href="{{ URL::to('/logout') }}">Logout</a></li>				
 					
 					@endif
@@ -70,11 +69,12 @@
 				<div class="collapse navbar-collapse" id="navbar">
 					<ul class="nav navbar-nav">						 
 											
-					@if (Auth::check() && Auth::user()->admin == 1)			
+					@if (Auth::check() && Auth::user()->role == 1)			
 						<li><a href="{{ URL::to('/admin') }}">Admin Panel</a></li>
 						<li><a href="{{ URL::to('/admin/slides') }}">Slides</a></li>					
 						<li><a href="{{ URL::to('/admin/listUsers') }}"> Users</a></li> 
-						<li><a href="{{ URL::to('/admin/listCity') }}">Cities</a></li>	
+						<li><a href="{{ URL::to('/admin/listCities') }}">Cities</a></li>
+						<li><a href="{{ URL::to('/admin/listCategories') }}">Categories</a></li>	
 						<li><a href="{{ URL::to('/admin/listMenu') }}">Menu</a></li>
 						<li><a href="{{ URL::to('/admin/contact') }}">Kontakt</a></li>	
 					

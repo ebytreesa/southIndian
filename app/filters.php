@@ -91,7 +91,7 @@ Route::filter('csrf', function()
 
 Route::filter('admin',function()
 {
-	if (Auth::user()->admin != 1)
+	if (Auth::user()->role != 1)
 	{
 		Auth::logout();
 		// die('ikke admin')
