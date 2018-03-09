@@ -9,7 +9,7 @@ Create User
 
 <div class="container">
     
-    {{ Form::open(array('route' => 'postCreateUser', 'class' => 'form-horizontal','id' => 'register-form', 'files' => true)) }}
+    {{ Form::open(array('route' => 'postRegister', 'class' => 'form-horizontal','id' => 'register-form', 'files' => true)) }}
         <legend>Create User</legend>
 
         <div class="form-group ">
@@ -132,8 +132,7 @@ Create User
             }
         },
 
-        submitHandler: function(form){
-            alert("form is submitting");
+        submitHandler: function(form){            
             form.submit();
         },
         

@@ -29,13 +29,13 @@ class UserController extends BaseController {
 			$user->email= Input::get('email');
 			$user->password	= Hash::make(Input::get('pass1'));
 			$user->city= Input::get('city');
-			$user->role     = Input::get('role');		
+			//$user->role     = Input::get('role');		
 			
 			$user->save();
 		}
 		if ($user)
-		{
-			return Redirect::to('/login')->withSuccess('Brugeren blev oprettet');
+		{	Auth::login($user);
+			return Redirect::to('/profile/'.Auth::user()->username)->withSuccess('Brugeren blev oprettet');
 		}else
 		{
 			return "der opstod en fejl";
