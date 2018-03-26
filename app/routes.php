@@ -24,17 +24,19 @@ Route::group(array('before' => 'guest'), function(){
 
 Route::group(array('before'=> 'auth'), function(){
  	Route::get('/logout', 'UserController@logout');
- 	Route::get('/profile/{name}', 'UserController@profile');
+  	Route::get('/profile/{name}', 'UserController@profile');
+    Route::get('/profile/editUser/{id}', 'UserController@editUser'); 
 
  	Route::get('/profile/{name}/createMenu', 'MenuController@createMenu');
 	Route::get('/profile/{name}/listMenu', 'MenuController@listMenu');
 	Route::get('/profile/{name}/editMenu/{id}', 'MenuController@editMenu');
 	Route::get('/profile/{name}/deleteMenu/{id}', 'MenuController@deleteMenu');
-
+  
  	Route::group(array('before' => 'csrf'), function(){
 
  		Route::post('/profile/{name}/createMenu', array('uses' => 'MenuController@postCreateMenu', 'as' => 'postCreateMenu'));
 		Route::post('/profile/{name}/editMenu', array('uses' => 'MenuController@postEditMenu', 'as' => 'postEditMenu'));
+		Route::post('/profile/editUser/{id}', array('uses' => 'UserController@postEditUser', 'as' => 'postEditUser'));
 
 
  	});
@@ -78,7 +80,7 @@ Route::group(array('before'=> 'auth'), function(){
 			Route::post('/admin/editContact', array('uses' => 'AdminController@postEditContact', 'as' => 'postEditContact'));
 
 			Route::post('/admin/createUser', array('uses' => 'AdminController@postCreateUser', 'as' => 'postCreateUser'));
-			Route::post('/admin/editUser', array('uses' => 'AdminController@postEditUser', 'as' => 'postEditUser'));
+			//Route::post('/admin/editUser', array('uses' => 'AdminController@postEditUser', 'as' => 'postEditUser'));
 
 			Route::post('/admin/createCity', array('uses' => 'CityController@postCreateCity', 'as' => 'postCreateCity'));
 			Route::post('/admin/editCity', array('uses' => 'CityController@postEditCity', 'as' => 'postEditCity'));

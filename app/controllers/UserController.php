@@ -28,6 +28,7 @@ class UserController extends BaseController {
 			$user->username= Input::get('username');
 			$user->email= Input::get('email');
 			$user->password	= Hash::make(Input::get('pass1'));
+			$user->address= Input::get('address');
 			$user->city= Input::get('city');
 			//$user->role     = Input::get('role');		
 			
@@ -125,7 +126,7 @@ class UserController extends BaseController {
 			$user->save();
 				
 		}
-		return Redirect::to('/admin/listUsers')->withSuccess('user er rettet');
+		return Redirect::to('/profile/'.Auth::user()->username)->withSuccess('user er rettet');
 		// if ($user)
 		// {
 		// 	$name = Auth::user()->username;

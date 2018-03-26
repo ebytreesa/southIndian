@@ -16,7 +16,9 @@ profile
 	</div>
 	<div class="col-md-9">
 	<p>Username: {{ Auth::user()->username }}</p>
-	<p>Email: {{ Auth::user()->email }}</p>	
+	<p>Email: {{ Auth::user()->email }}</p>
+	<p>Email: {{ Auth::user()->address }}</p>
+	<p>Email: {{ Auth::user()->city }}</p>	
 	<p>Votes: {{ Auth::user()->votes }}</p>
 	<a href="{{ URL::to('/profile/editUser/'.Auth::user()->id) }}" class="btn btn-default" style="margin-left:50px;">Edit</a>
 	</div>

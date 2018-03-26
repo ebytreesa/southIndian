@@ -39,10 +39,10 @@
 			@endif
 		</div>
 
-		<div class="row" style="height:100px; border:">
+		<div class="row" style="height:200px; border:1px solid red;">
 			<div class="container" style="border:;margin-top:20px;" >
 				<div class="col-sm-9">
-					<a class="navbar-brand" href="/" ><p style="font-size:28px; color:blue;font-family: "Times New Roman", Times, serif;"><strong>SOUTH INDIAN FOOD</strong></p></a>		
+					<a class="navbar-brand" href="/" ><img src="{{ URL::to('/images/logo2.png') }}" class="image-responsive" ></a>		
 				</div>
 
 				<div class="col-sm-3">
@@ -62,6 +62,26 @@
 			</div>			
 		</div>
 
+		<div class="row" style="border:1px solid red;">
+		<div class="col-md-3 " >		
+				<form class="" role="">
+						
+					
+				</form>
+		</div>
+			<div class="col-md-offset-6 col-md-3 " >		
+				<form class="navbar-form" role="search">
+						 <div class="input-group search" >
+  						<input class="" name="search" id="search" type="text" style="height:34px;">
+ 						 <div class="input-group-btn">
+    						<button class="btn btn-small btn-primary" type="submit">search</i></button>
+  						</div>
+					</div>
+				</form>
+		</div>
+		
+		</div>
+
 		<div class="row" style="height:auto; min-height:400px;">
 			@yield('content')			
 		</div>
@@ -75,14 +95,14 @@
 	</div>
 
 		
-				<div class="col-md-3 " >		
-					<form class="navbar-form" role="search">
-   						 <div class="input-group search" >
-      						<input class="" name="search" id="search" type="text" style="height:34px;">
-     						 <div class="input-group-btn">
-        						<button class="btn btn-small btn-primary" type="submit">search</i></button>
-      						</div>
-    					</div>
+	<script type="text/javascript">
+		window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 1800);
+		
+	</script>			
   					
 
 		

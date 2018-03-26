@@ -49,6 +49,14 @@ Create User
              <div class="col-sm-2 col-md-2"></div>
         </div>
 
+         <div class="form-group ">
+            <label for="address" class="col-sm-2 col-md-1 control-label">Address</label>
+            <div class="col-sm-8 col-md-9">
+                <input type="text" id="address" name="address" class="form-control"  />
+            </div>
+             <div class="col-sm-2 col-md-2"></div>
+        </div>
+
         <div class="form-group ">
             <label for="city" class="col-sm-2 col-md-1 control-label">City</label>
             <div class="col-sm-8 col-md-9">
@@ -97,6 +105,16 @@ Create User
                 required:true,
 
             },
+
+            city:{
+                required:true,
+
+            },
+
+            address:{
+                required:true,
+
+            },
             email:{
                 required:true,
                 email:true
@@ -115,7 +133,7 @@ Create User
         },
 
         messages:{
-            username:{
+            username, city:{
                 required: "attribute feltet skal udfyldes",
             },
             email:{
