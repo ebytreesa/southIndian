@@ -6,26 +6,26 @@ profile
 
 @section('content')
 <div class="container">
-<div class="row user_info" style="border:1px solid black; margin-bottom:30px;padding:25px;">
-	<div class="col-md-3">
-	@if(Auth::user()->image)
-		<img src="{{ URL::to('/users/'.Auth::user()->image)}}" class="image-responsive" style="height:120px; width:120px">
-	@else
-		<img src="" class="image-responsive" style="height:120px; width:120px">
-	@endif
+	<div class="row user_info" style="border:1px solid black; margin-bottom:30px;padding:25px;">
+		<div class="col-md-3">
+		@if(Auth::user()->image)
+			<img src="{{ URL::to('/users/'.Auth::user()->image)}}" class="image-responsive" style="height:120px; width:120px">
+		@else
+			<img src="" class="image-responsive" style="height:120px; width:120px">
+		@endif
+		</div>
+		<div class="col-md-9">
+		<p>Username: {{ Auth::user()->username }}</p>
+		<p>Email: {{ Auth::user()->email }}</p>
+		<p>Email: {{ Auth::user()->address }}</p>
+		<p>Email: {{ Auth::user()->city }}</p>	
+		<p>Votes: {{ Auth::user()->votes }}</p>
+		<a href="{{ URL::to('/profile/editUser/'.Auth::user()->id) }}" class="btn btn-default" style="margin-left:50px;">Edit</a>
+		</div>
+		{{-- <div class="col-md-6 ">
+			
+		</div> --}}
 	</div>
-	<div class="col-md-9">
-	<p>Username: {{ Auth::user()->username }}</p>
-	<p>Email: {{ Auth::user()->email }}</p>
-	<p>Email: {{ Auth::user()->address }}</p>
-	<p>Email: {{ Auth::user()->city }}</p>	
-	<p>Votes: {{ Auth::user()->votes }}</p>
-	<a href="{{ URL::to('/profile/editUser/'.Auth::user()->id) }}" class="btn btn-default" style="margin-left:50px;">Edit</a>
-	</div>
-	{{-- <div class="col-md-6 ">
-		
-	</div> --}}
-</div>
 <div class=" row" style="margin-bottom:10px;">
 	<h3 style="display:inline;">Menu</h3>
 	<a href="{{ URL::to('/profile/'.Auth::user()->username.'/createMenu') }}" class="btn btn-success " style="margin-left:100px;">Add Menu</a>

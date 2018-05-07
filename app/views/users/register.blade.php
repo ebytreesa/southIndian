@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.home')
 
 @section('title')
 Create User
@@ -60,7 +60,15 @@ Create User
         <div class="form-group ">
             <label for="city" class="col-sm-2 col-md-1 control-label">City</label>
             <div class="col-sm-8 col-md-9">
-                <input type="text" id="city" name="city" class="form-control"  />
+                <select name="city" id="city" class="form-control "> 
+                            <?php
+                    $city =City::orderBy('name','asc')->get();
+                    ?>
+                    <option selected disabled="disabled">Choose a city </option>
+                    @foreach($city as $city)
+                    <option value="{{ $city->id }}" data="{{ $city->id }}">{{ $city->name }}</option>
+                    @endforeach
+                </select>
             </div>
              <div class="col-sm-2 col-md-2"></div>
         </div>

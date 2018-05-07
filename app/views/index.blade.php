@@ -6,6 +6,31 @@
 
 @section('content')
 	<div class="">
+
+		<div class="row" style="border:1px solid red;">
+		<div class="col-md-3 " >		
+				<form class="" role="">
+						
+					
+				</form>
+		</div>
+			<div class="col-md-offset-6 col-md-3 " >		
+				{{ Form::open(array('route' =>'postSubmitCity', 'class' => 'navbar-form')) }}	
+				
+					<select name="city" id="city" class="form-control "> 
+		                    <?php
+		            $city =City::orderBy('name','asc')->get();
+		            ?>
+		            {{-- <option selected disabled="disabled">Choose a city </option> --}}
+		            @foreach($city as $city)
+		            <option value="{{ $city->name }}" data="{{ $city->id }}">{{ $city->name }}</option>
+		            @endforeach
+		            </select>
+		            <button type="submit" class="btn btn-primary">Choose</button>
+
+				{{Form::close()}}		</div>
+		
+		</div>
 		<div id="myCarousel" class="carousel slide" data-ride="carousel" style="z-index:-1;">
 		  <!-- Indicators -->
 		  {{-- <ol class="carousel-indicators">

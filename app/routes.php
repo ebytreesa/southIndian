@@ -3,17 +3,24 @@
 
 
 Route::get('/','HomeController@index' );
-
+Route::get('/{city}/{kitchen}/menu','HomeController@viewMenu' );
 Route::group(array('before' => 'csrf'), function(){
 		// Route::post('/kontakt', array('uses' => 'HomeController@postKontakt', 'as' =>'postKontakt'));
-		// Route::post('/admin', array('uses' => 'AdminController@postLogin', 'as' =>'postLogin'));
+		 Route::post('/', array('uses' => 'HomeController@postSubmitCity', 'as' =>'postSubmitCity'));
 			
 	});
+
+//Api routes
+Route::get('/api/v1/{city}/{kitchen}/menu','HomeController@menu' );
+Route::get('/api/v1/addItem/{id}','HomeController@addItem' );
 
 Route::group(array('before' => 'guest'), function(){
 
  	Route::get('/login', 'UserController@login');
 	Route::get('/register', 'UserController@register');
+
+	//Route::get('/{city}','HomeController@postSubmitCity' );
+	
  	
 	Route::group(array('before' => 'csrf'), function(){
  		Route::post('/register', array('uses' => 'UserController@postRegister', 'as' => 'postRegister'));

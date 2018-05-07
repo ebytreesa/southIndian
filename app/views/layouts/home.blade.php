@@ -1,15 +1,23 @@
 <!doctype html>
 <html lang="da">
 <head>
+<base href="/">
 <meta charset="utf-8">
 <title>@yield('title')</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="{{ URL::to('/css/bootstrap.min.css') }}">
+<script src="{{ URL::to('/app/lib/ang/angular-1.6.9/angular.js') }}"></script>
+<script src="{{ URL::to('/app/lib/ang/angular-1.6.9/angular-route.js') }}"></script>
+<script src="{{ URL::to('/app/lib/ang/angular-1.6.9/angular-cookies.js') }}"></script>
+
 <script src="{{ URL::to('/js/jquery.min.js') }}"></script>
 <script src="{{ URL::to('/js/jquery.validate.min.js') }}"></script>
 <script src="{{ URL::to('/js/bootstrap.min.js') }}"></script> 
 
+<script src="{{ URL::to('/app/app.js') }}"></script>
+{{-- <script src="{{ URL::to('/app/controllers/cities.js') }}"></script>
+ --}}
  
 </head>
 <style>
@@ -62,25 +70,7 @@
 			</div>			
 		</div>
 
-		<div class="row" style="border:1px solid red;">
-		<div class="col-md-3 " >		
-				<form class="" role="">
-						
-					
-				</form>
-		</div>
-			<div class="col-md-offset-6 col-md-3 " >		
-				<form class="navbar-form" role="search">
-						 <div class="input-group search" >
-  						<input class="" name="search" id="search" type="text" style="height:34px;">
- 						 <div class="input-group-btn">
-    						<button class="btn btn-small btn-primary" type="submit">search</i></button>
-  						</div>
-					</div>
-				</form>
-		</div>
 		
-		</div>
 
 		<div class="row" style="height:auto; min-height:400px;">
 			@yield('content')			
@@ -101,7 +91,7 @@
         $(this).remove(); 
     });
 }, 1800);
-		
+
 	</script>			
   					
 

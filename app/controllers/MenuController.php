@@ -17,7 +17,7 @@ class MenuController extends BaseController {
 	
 	public function listmenu()
 	{
-		$menu = menu::orderBY('id', 'desc')->paginate(10);
+		$menu = Menu::orderBY('id', 'desc')->paginate(10);
 		return View::make('menu.listmenu')->withMenu($menu);
 	}
 
