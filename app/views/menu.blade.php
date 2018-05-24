@@ -7,22 +7,22 @@
 @section('content')
 <div class="container" ng-app="cart">
 	<div class="row" ng-controller="cartController" style="position:relative;margin-top:20px;">
-		<div class="col-sm-8 " ng-repeat="menu in menu" ng-cloak>
+		<div class="col-sm-8 " ng-repeat="item in items" ng-cloak>
 
 			
 
 				<div class="row user_menu" style="border:1px solid black; margin-bottom:15px; padding:10px;">	
 				
-					<div class="col-md-3 menu_image">
-						<img ng-src="{{ URL::to('/')}}/menu/@{{menu.image}}" class="image-responsive" style="height:120px; width:120px">
+					<div class="col-md-3 item_image">
+						<img ng-src="{{ URL::to('/')}}/menu/@{{item.image}}" class="image-responsive" style="height:120px; width:120px">
 							
 					</div>	
 					<div class="col-md-9 ">
 						<div class="col-md-9">
-							<h4>@{{ menu.name }}</h4>
+							<h4>@{{ item.name }}</h4>
 								
-							<p><strong>Votes</strong>:@{{ menu.votes }}	</p>
-							<p><strong>Description</strong>:@{{ menu.description }}	</p>
+							<p><strong>Price</strong>:@{{ item.price }}	</p>
+							<p><strong>Description</strong>:@{{ item.description }}	</p>
 						</div> 
 						{{-- @if(Auth::check())  --}}
 						<div class="col-md-3">
@@ -33,7 +33,7 @@
 								  							       
 								<?php }?>
 							</select>
-							<button class="btn  btn-xs btn-primary" style="" ng-click="addItem(menu,qty)">Add</button> 				
+							<button class="btn  btn-xs btn-primary" style="" ng-click="addItemToCart(item,qty)">Add</button> 				
 					
 						</div>
 						{{-- @endif --}}
@@ -47,9 +47,15 @@
 			<div class="right-box" style="padding:10px;">	
 				<h2>Your cart</h2>
 				<p>@{{cart.length}} items in your cart</p>
-				<div class="cart_items" ng-repeat="c in cart">
-					<table><tr><td>@{{c.name}}</td> <td>@{{c.qty}}</td></tr></table>
-				</div>
+				<table class="table">
+					<thead><tr><th>item</th><th>qty</th><th>price</th><th>Delete</th></tr>
+					</thead>
+					<tbody class="cart_items" ng-repeat="c in cart">
+						<tr><td>@{{c.item.name}}</td> <td>@{{c.qty}}</td> <td>@{{c.qty * c.item.price}}
+						</td><td><a ng-click="removeItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td></tr>
+					</tbody>
+				</table>
+				
 			</div>
 		</div>
 	</div>	
@@ -82,44 +88,64 @@
 
 	            $http.get(API_URL + city +"/" + kitchen + "/menu")
 	            .then(function(response) {
-	                $scope.menu = response.data;
+	                $scope.items = response.data;
 
-	               console.log(response.data);
+	               console.log($scope.items);
 
 	               $scope.cart =[];
          		   $scope.total = 0;
 
+
          		   if(!angular.isUndefined($cookies.get('total'))){
-		  $scope.total = parseFloat($cookies.get('total'));
-		}
+		 				 $scope.total = parseFloat($cookies.get('total'));
+					}
 		//Sepetimiz daha önceden tanımlıysa onu çekelim
-		if (!angular.isUndefined($cookies.get('cart'))) {
-		 		$scope.cart =  $cookies.getObject('cart');
-		}
+					if (!angular.isUndefined($cookies.get('cart'))) {
+					 		$scope.cart =  $cookies.getObject('cart');
+					}
          		   // Adding items to cart
-		    	$scope.addItem = function(menu,qty){   	
-		    	$scope.cart.push({menu,qty:qty}); 
-		    		// if($scope.cart.length===0){
-		    		// 	menu.count = 1;
-		    		// 	$scope.cart.push(menu);
-		    		// }else{
-		    		// 	var repeat = false;
+		    	$scope.addItemToCart = function(item,qty){   	
+		    	//$scope.cart.push({menu,qty:qty}); 
+		    		if($scope.cart.length===0){
+		    			//item.count = ;
+		    			$scope.cart.push({item,qty:qty}); 
+		    		}else{
+		    			var repeat = false;
+		    			
+		    			for(var i=0; i<$scope.cart.length; i++){
+		    				if($scope.cart[i].item.id === item.id){
+		    					repeat = true; 
+		    					$scope.cart[i].qty =parseInt($scope.cart[i].qty)+ parseInt(qty);
+
+		    				}
+		    					
+		    			}
+		    			if(!repeat){
+		    				$scope.cart.push({item,qty:qty});
+		    			}
+
+		    		}
 
 
-		    		// }
-
-
-		    		var expireDate = new Date();
-      expireDate.setDate(expireDate.getDate() + 1);
-		 	$cookies.putObject('cart', $scope.cart,  {'expires': expireDate});
-		 	$scope.cart = $cookies.getObject('cart');
-		 
-		  $scope.total += parseFloat(menu.price);
-      $cookies.put('total', $scope.total,  {'expires': expireDate});
+			    	var expireDate = new Date();
+		     		expireDate.setDate(expireDate.getDate() + 1);
+				 	$cookies.putObject('cart', $scope.cart,  {'expires': expireDate});
+				 	$scope.cart = $cookies.getObject('cart');
+			 
+			 		$scope.total += parseFloat(item.price);
+	      			$cookies.put('total', $scope.total,  {'expires': expireDate});
 		    	
 		    	}
-		    		
-		 // };
+
+		    	$scope.removeItem = function($index){
+		    	 	$scope.cart.splice($index,1);
+
+		    	 	var expireDate = new Date();
+		     		expireDate.setDate(expireDate.getDate() + 1);
+		    	 	$cookies.putObject('cart', $scope.cart,  {'expires': expireDate});
+				 	$scope.cart = $cookies.getObject('cart');
+		    	
+		    	}
 console.log($scope.cart);
 
             	}); 
