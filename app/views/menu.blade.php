@@ -26,13 +26,12 @@
 						</div> 
 						{{-- @if(Auth::check())  --}}
 						<div class="col-md-3">
-							<select ng-model="qty">
-							  <?php
-								 for ($i=1; $i<=10; $i++) { ?>
-								    <option value="<?php echo $i;?>"><?php echo $i;?></option>
-								  							       
-								<?php }?>
-							</select>
+							{{--  --}}
+
+							<select ng-model="qty" ng-options=" q for q in quantity">
+      
+    						</select>
+
 							<button class="btn  btn-xs btn-primary" style="" ng-click="addItemToCart(item,qty)">Add</button> 				
 					
 						</div>
@@ -44,18 +43,25 @@
 
 
 		<div class="col-sm-4" style="border:1px solid black;min-height:100px;position:absolute;right:0;">
-			<div class="right-box" style="padding:10px;">	
+			<div ng-show="cart.length == 0" class="right-box" style="padding:10px;">
+				You have 0 items in your cart
+			</div>
+			<div ng-show="cart.length !== 0" class="right-box" style="padding:10px;">	
 				<h2>Your cart</h2>
 				<p>@{{cart.length}} items in your cart</p>
 				<table class="table">
 					<thead><tr><th>item</th><th>qty</th><th>price</th><th>Delete</th></tr>
 					</thead>
-					<tbody class="cart_items" ng-repeat="c in cart">
-						<tr><td>@{{c.item.name}}</td> <td>@{{c.qty}}</td> <td>@{{c.qty * c.item.price}}
-						</td><td><a ng-click="removeItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td></tr>
+					<tbody>
+						<tr class="cart_items" ng-repeat="c in cart">
+							<td>@{{c.item.name}}</td> <td>@{{c.qty}}</td> <td>@{{c.qty * c.item.price}}
+							</td><td><a ng-click="removeItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
+						</tr>
+
+						<tr><td></td><td>total</td><td ng-model="total">@{{total}}</td><td></td></tr>
 					</tbody>
 				</table>
-				
+				<button type="button" class="btn btn-primary" id="btn-save" ng-click="saveToDb(cart)">Save</button>
 			</div>
 		</div>
 	</div>	
@@ -79,7 +85,7 @@
 	}));
 
 
-         app.controller('cartController',function($scope, $http, API_URL, $routeParams,$cookies) {
+    app.controller('cartController',function($scope, $http, API_URL, $routeParams,$cookies) {
          	//If you want to use URL attributes before the website is loaded
          	$scope.$on('$routeChangeSuccess', function () {
             
@@ -89,6 +95,10 @@
 	            $http.get(API_URL + city +"/" + kitchen + "/menu")
 	            .then(function(response) {
 	                $scope.items = response.data;
+	                
+	                // selcet dropdown menu
+	                $scope.quantity = [1,2,3,4,5,6,7,8,9,10];
+	                 $scope.qty = 1; //selected quantity
 
 	               console.log($scope.items);
 
@@ -109,6 +119,7 @@
 		    		if($scope.cart.length===0){
 		    			//item.count = ;
 		    			$scope.cart.push({item,qty:qty}); 
+		    			// $scope.total = (item.price) * parseFloat(qty);
 		    		}else{
 		    			var repeat = false;
 		    			
@@ -116,7 +127,7 @@
 		    				if($scope.cart[i].item.id === item.id){
 		    					repeat = true; 
 		    					$scope.cart[i].qty =parseInt($scope.cart[i].qty)+ parseInt(qty);
-
+		    					
 		    				}
 		    					
 		    			}
@@ -132,24 +143,47 @@
 				 	$cookies.putObject('cart', $scope.cart,  {'expires': expireDate});
 				 	$scope.cart = $cookies.getObject('cart');
 			 
-			 		$scope.total += parseFloat(item.price);
+			 		$scope.total += parseInt(qty)*(item.price);
 	      			$cookies.put('total', $scope.total,  {'expires': expireDate});
 		    	
-		    	}
+		    	};
 
-		    	$scope.removeItem = function($index){
+		    	$scope.removeItem = function($index,c){
 		    	 	$scope.cart.splice($index,1);
 
 		    	 	var expireDate = new Date();
 		     		expireDate.setDate(expireDate.getDate() + 1);
 		    	 	$cookies.putObject('cart', $scope.cart,  {'expires': expireDate});
 				 	$scope.cart = $cookies.getObject('cart');
+
+			 		$scope.total -= parseInt(c.qty)*parseFloat(c.price);				 	 
+      				 $cookies.put('total', $scope.total,  {'expires': expireDate});
 		    	
-		    	}
+		    	};
 console.log($scope.cart);
 
-            	}); 
-			});
+			$scope.saveToDb = function(cart){
+				var data = [];
+            for (var i = 0; i<cart.length; i++) {                
+                data.push({name: cart[i].name});                
+            }
+            console.log(data);
+				$http({
+		            method: 'POST',
+		            url: API_URL+"saveToDb",
+		            data: $.param($scope.c,$scope.total)
+	            
+	        }).success(function(response) {
+	            console.log(response);
+	            location.reload();
+	        }).error(function(response) {
+	            console.log(response);
+	            alert('This is embarassing. An error has occured. Please check the log for details');
+	        });
+			};
+
+	     });
+	});
 
 
          	
