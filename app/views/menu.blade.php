@@ -53,7 +53,7 @@
 					<thead><tr><th>item</th><th>qty</th><th>price</th><th>Delete</th></tr>
 					</thead>
 					<tbody>
-						<tr class="cart_items" ng-repeat="c in cart">
+						<tr class="cart_items" ng-repeat="c in cart" ng-cloak>
 							<td>@{{c.item.name}}</td> <td>@{{c.qty}}</td> <td>@{{c.qty * c.item.price}}
 							</td><td><a ng-click="removeItem($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
 						</tr>
@@ -143,12 +143,14 @@
 				 	$cookies.putObject('cart', $scope.cart,  {'expires': expireDate});
 				 	$scope.cart = $cookies.getObject('cart');
 			 
-			 		$scope.total += parseInt(qty)*(item.price);
+			 		$scope.total += parseInt(qty)*(item.price);console.log($scope.total);
 	      			$cookies.put('total', $scope.total,  {'expires': expireDate});
 		    	
 		    	};
 
-		    	$scope.removeItem = function($index,c){
+		    	$scope.removeItem = function($index){
+		    	 	$scope.total -= parseInt($scope.cart[$index].qty)*parseFloat($scope.cart[$index].item.price);	console.log($scope.total);			 	 
+      				  
 		    	 	$scope.cart.splice($index,1);
 
 		    	 	var expireDate = new Date();
@@ -156,8 +158,9 @@
 		    	 	$cookies.putObject('cart', $scope.cart,  {'expires': expireDate});
 				 	$scope.cart = $cookies.getObject('cart');
 
-			 		$scope.total -= parseInt(c.qty)*parseFloat(c.price);				 	 
-      				 $cookies.put('total', $scope.total,  {'expires': expireDate});
+				 	$cookies.put('total', $scope.total,  {'expires': expireDate});
+
+			 		
 		    	
 		    	};
 console.log($scope.cart);
