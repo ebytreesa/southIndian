@@ -39,6 +39,32 @@ class HomeController extends BaseController {
 		return $menu;
 	}
 
+	public function checkout(){
+		$data = Input::get();
+		return $data;
+	}
+
+	public function saveToDb(){
+		$data = Input::get();
+		// $cart = new Cart;
+		
+		foreach ($data as  $d) {
+			$cart = new Cart; 
+			$item_id = $d['item']['id'];
+			$kitchen_id = Menu::where('id', $item_id)->first()->user_id;
+			$cart->kitchen_id = $kitchen_id;
+			$cart->item_id = $d['item']['id'];
+			$cart->price = $d['item']['price'];
+			$cart->quantity = $d['qty'];
+			//$cart->name = $d['item']['name'];
+			//$cart->save();
+		}		
+
+		   return "Your order has been sent";
+
+			
+	}
+
 	public function menu1($city,$kitchen)
 	{
 		$kitchen_id = User::where('username',$kitchen)->first()->id;

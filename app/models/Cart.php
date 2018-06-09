@@ -1,5 +1,5 @@
 <?php
-class City extends Eloquent{
+class Cart extends Eloquent{
 	protected $table = 'cart';
 
 }

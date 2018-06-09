@@ -13,6 +13,10 @@ Route::group(array('before' => 'csrf'), function(){
 //Api routes
 Route::get('/api/v1/{city}/{kitchen}/menu','HomeController@menu' );
 Route::get('/api/v1/addItem/{id}','HomeController@addItem' );
+Route::post('/api/v1/saveToDb','HomeController@saveToDb' );
+Route::post('/api/v1/checkout','HomeController@checkout' );
+
+
 
 Route::group(array('before' => 'guest'), function(){
 

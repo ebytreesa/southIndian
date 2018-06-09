@@ -42,11 +42,11 @@
 			</div>
 
 
-		<div class="col-sm-4" style="border:1px solid black;min-height:100px;position:absolute;right:0;">
+		<div class="col-sm-4" style="border:1px solid black;min-height:100px;position:absolute;right:0;" ng-cloak>
 			<div ng-show="cart.length == 0" class="right-box" style="padding:10px;">
 				You have 0 items in your cart
 			</div>
-			<div ng-show="cart.length !== 0" class="right-box" style="padding:10px;">	
+			<div ng-show="cart.length !== 0" class="right-box" style="padding:10px;" ng-cloak>	
 				<h2>Your cart</h2>
 				<p>@{{cart.length}} items in your cart</p>
 				<table class="table">
@@ -61,12 +61,73 @@
 						<tr><td></td><td>total</td><td ng-model="total">@{{total}}</td><td></td></tr>
 					</tbody>
 				</table>
-				<button type="button" class="btn btn-primary" id="btn-save" ng-click="saveToDb(cart)">Save</button>
+				<button type="button" class="btn btn-primary" id="btn-save" ng-click="saveToDb()">Save</button>
+				<button type="button" class="btn btn-success" id="btn-save" ng-click="checkout()">Checkout</button>
 			</div>
 		</div>
 	</div>	
 
 </div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Checkout</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form name="customerForm" class="form-horizontal" novalidate="">
+
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-3 control-label">Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control has-error" id="name" name="name" placeholder="Fullname" value="" 
+                                        ng-model="customer.name" ng-required="true">
+                                        <span class="help-inline" 
+                                        ng-show="customers.name.$invalid && customers.name.$touched">Name field is required</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" value="" 
+                                        ng-model="customer.email" ng-required="true">
+                                        <span class="help-inline" 
+                                        ng-show="customers.email.$invalid && customers.email.$touched">Valid Email is required</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label">Contact Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="contact_number" name="contact_number" placeholder="Contact Number" value="" 
+                                        ng-model="customer.contact_number" ng-required="true">
+                                    <span class="help-inline" 
+                                        ng-show="customers.contact_number.$invalid && customers.contact_number.$touched">Contact number is required</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-3 control-label">Address</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="address" name="address" placeholder="Address" value="" 
+                                        ng-model="customer.address" ng-required="true">
+                                    <span class="help-inline" 
+                                        ng-show="customers.address.$invalid && customers.address.$touched">Address is required</span>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="btn-save" ng-click="save(modalstate, id)" ng-disabled="customerForm.$invalid">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -85,7 +146,7 @@
 	}));
 
 
-    app.controller('cartController',function($scope, $http, API_URL, $routeParams,$cookies) {
+    app.controller('cartController',function($scope, $http, API_URL, $routeParams,$cookies,$location,$window,$rootScope) {
          	//If you want to use URL attributes before the website is loaded
          	$scope.$on('$routeChangeSuccess', function () {
             
@@ -164,22 +225,34 @@
 		    	
 		    	};
 console.log($scope.cart);
+	
+			$scope.checkout = function(){
+					$('#myModal').modal('show');
 
-			$scope.saveToDb = function(cart){
-				var data = [];
-            for (var i = 0; i<cart.length; i++) {                
-                data.push({name: cart[i].name});                
-            }
-            console.log(data);
+			};
+
+			$scope.saveToDb = function(){
+				// var data = [];
+    //         for (var i = 0; i<cart.length; i++) {                
+    //             data.push({name: cart[i].name});                
+    //         }
+             $scope.customer ={};
 				$http({
 		            method: 'POST',
 		            url: API_URL+"saveToDb",
-		            data: $.param($scope.c,$scope.total)
+		            data: $scope.cart,
+		           // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 	            
-	        }).success(function(response) {
-	            console.log(response);
-	            location.reload();
-	        }).error(function(response) {
+	        	}).then(function success(response) {
+	           	  
+	           	 $cookies.remove('cart');
+	           	  $cookies.remove('total');
+	           	   console.log(response);
+	           	       location.reload();
+	           	      //$rootScope.message="success";
+	           	      //$window.location.href= ('/');
+	           	      alert('success');
+	       		},function error(response) {
 	            console.log(response);
 	            alert('This is embarassing. An error has occured. Please check the log for details');
 	        });
@@ -193,25 +266,7 @@ console.log($scope.cart);
 		    
 		});
 
-    // $scope.add = function(id) {
-    //     var url = API_URL + "addItem/"+ id;
-        
-                
-    //     $http({
-    //         method: 'POST',
-    //         url: url,
-    //         data: $.param($scope.menu),
-    //         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    //     }).success(function(response) {
-    //         console.log(response);
-    //         location.reload();
-    //     }).error(function(response) {
-    //         console.log(response);
-    //         alert('This is embarassing. An error has occured. Please check the log for details');
-    //     });
-    // }
- 
-                
+                  
  
 </script>
 
